@@ -1,0 +1,1543 @@
+<meta charset="utf-8" />
+<title>DISC teszt</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --bg:#F7F8F5;
+  --surface:#FFFFFF;
+  --surface-2:#EEF2EE;
+  --border:#E2E8E3;
+  --border-strong:#D5DED8;
+  --ink:#26332F;
+  --ink-secondary:#68756F;
+  --ink-muted:#9AA59F;
+
+  --forest:#26332F;
+  --forest-hover:#354640;
+  --forest-active:#1E2925;
+  --on-forest:#FFFFFF;
+
+  --d:#E88978;      --d-hover:#DE7968;  --d-soft:#FDF0ED;  --d-selected:#F8DDD8;  --d-dark:#8D4539;
+  --i:#EBCB72;       --i-hover:#E2BD5B;  --i-soft:#FEF8E8;  --i-selected:#F9EBC0;  --i-dark:#806A27;
+  --s:#8FBAA5;        --s-hover:#7FAA96;  --s-soft:#EFF7F2;  --s-selected:#DDECE3;  --s-dark:#466B57;
+  --c:#86A9C4;         --c-hover:#759BB9;  --c-soft:#EFF5F9;  --c-selected:#DDEAF2;  --c-dark:#48667D;
+
+  --shadow-sm: 0 1px 2px rgba(38,51,47,.05);
+  --shadow-md: 0 6px 20px -8px rgba(38,51,47,.12);
+  --shadow-lift: 0 14px 32px -14px rgba(38,51,47,.20);
+  --radius-lg: 26px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  min-height:100vh;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.display{
+  font-family:"Manrope", system-ui, sans-serif;
+  font-weight:600;
+  text-wrap:balance;
+  margin:0;
+  letter-spacing:-.01em;
+}
+.eyebrow{
+  font-size:.85rem;
+  font-weight:600;
+  color:var(--ink-secondary);
+}
+button{font-family:inherit;}
+:focus-visible{outline:2.5px solid var(--forest); outline-offset:3px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+}
+
+/* ---------- shell ---------- */
+.app{
+  max-width:640px;
+  margin:0 auto;
+  padding:0 20px 64px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+.app.wide{max-width:820px;}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:linear-gradient(var(--bg) 72%, transparent);
+  padding:18px 0 12px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:4px 0 16px;
+}
+.brand .display{font-size:1.1rem; font-weight:700;}
+.brand .step-label{margin-left:auto; font-size:.82rem; color:var(--ink-muted); font-weight:500;}
+
+.progress-track{
+  height:6px;
+  border-radius:999px;
+  background:#E4EAE5;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  border-radius:999px;
+  background:var(--s);
+  width:0%;
+  transition:width .5s cubic-bezier(.3,.7,.3,1);
+}
+.progress-meta{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  font-size:.82rem;
+  color:var(--ink-secondary);
+  margin-top:9px;
+}
+.progress-message{font-weight:600; color:var(--ink);}
+.progress-count{color:var(--ink-muted); font-variant-numeric:tabular-nums; flex:none;}
+
+main{flex:1; display:flex; flex-direction:column; justify-content:center; padding:8px 0;}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-md);
+  padding:38px 34px;
+  position:relative;
+  overflow:hidden;
+}
+@media (max-width:480px){
+  .card{padding:26px 20px; border-radius:20px;}
+}
+
+.hidden{display:none !important;}
+
+/* ---------- decorative blobs (intro only) ---------- */
+.decor-blob{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(60px);
+  opacity:.55;
+  z-index:0;
+  pointer-events:none;
+}
+.card-content{position:relative; z-index:1;}
+
+/* ---------- intro ---------- */
+.intro-types{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin:26px 0 6px;
+}
+.intro-type{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:9px;
+  text-align:center;
+}
+.intro-type span{font-size:.74rem; font-weight:600; color:var(--ink-secondary); line-height:1.25;}
+.lede{color:var(--ink-secondary); font-size:1.02rem; margin-top:12px; line-height:1.6;}
+.legend-list{
+  margin:26px 0 0;
+  padding:0;
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:11px;
+}
+.legend-list li{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:.94rem;
+  color:var(--ink);
+}
+.legend-swatch{width:9px;height:9px;border-radius:50%;flex:none;}
+
+.about-disc{
+  margin-top:32px;
+  padding-top:26px;
+  border-top:1px solid var(--border);
+}
+.about-disc .section-title{margin:0 0 10px;}
+.about-disc .lede{margin-top:0;}
+
+/* ---------- type badge (svg) ---------- */
+.type-badge{display:block;}
+
+/* ---------- question ---------- */
+.q-meta{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:22px;
+}
+.q-badge{
+  font-size:.86rem;
+  font-weight:600;
+  color:var(--ink-muted);
+}
+.q-number{
+  font-variant-numeric:tabular-nums;
+  color:var(--ink-muted);
+  font-size:.82rem;
+  margin-left:auto;
+}
+.q-text{
+  font-size:1.55rem;
+  font-weight:600;
+  line-height:1.4;
+  margin-bottom:10px;
+  letter-spacing:-.01em;
+}
+.q-hint{
+  color:var(--ink-muted);
+  font-size:.92rem;
+  margin:0 0 30px;
+  line-height:1.5;
+}
+
+@keyframes qEnter{
+  from{opacity:0; transform:translateY(6px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.q-enter{animation:qEnter .32s cubic-bezier(.25,.8,.35,1) both;}
+
+/* scale (test 1) */
+.scale-labels{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:26px;
+}
+.scale-labels .left,
+.scale-labels .right{
+  line-height:1.25;
+  transition:font-size .18s ease, color .18s ease, font-weight .18s ease;
+}
+.scale-labels .left{text-align:left;}
+.scale-labels .right{text-align:right;}
+.scale-slider-wrap{margin-bottom:4px;}
+.scale-slider{
+  width:100%;
+  height:6px;
+  border-radius:999px;
+  background:#E4EAE5;
+  outline:none;
+  -webkit-appearance:none;
+  appearance:none;
+  cursor:pointer;
+  margin:0;
+}
+.scale-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  appearance:none;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:var(--forest);
+  border:4px solid var(--surface);
+  box-shadow:var(--shadow-md);
+  margin-top:-10px;
+  cursor:pointer;
+  transition:transform .2s ease, background .2s ease;
+}
+.scale-slider::-webkit-slider-thumb:hover{transform:scale(1.08); background:var(--forest-hover);}
+.scale-slider::-moz-range-track{
+  height:6px;
+  border-radius:999px;
+  background:#E4EAE5;
+}
+.scale-slider::-moz-range-thumb{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:var(--forest);
+  border:4px solid var(--surface);
+  box-shadow:var(--shadow-md);
+  cursor:pointer;
+}
+
+/* yes/no answer cards (test 2 & 3) */
+.yesno{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.yesno-btn{
+  position:relative;
+  padding:22px 16px;
+  border-radius:var(--radius-md);
+  border:1.5px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-size:1.06rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:transform .2s cubic-bezier(.25,.8,.35,1), border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.yesno-btn:hover:not(:disabled){
+  border-color:var(--border-strong);
+  box-shadow:var(--shadow-sm);
+  transform:translateY(-2px);
+}
+.yesno-btn:disabled{cursor:default;}
+.yesno-btn.selected{
+  background:var(--surface-2);
+  border-color:var(--ink);
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-sm);
+}
+.yesno-check{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:20px;
+  height:20px;
+  opacity:0;
+  transform:scale(.5);
+  transition:opacity .18s ease, transform .18s cubic-bezier(.3,1.4,.4,1);
+}
+.yesno-btn.selected .yesno-check{opacity:1; transform:scale(1);}
+
+/* nav */
+.nav-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:30px;
+  gap:12px;
+}
+.btn{
+  font-weight:600;
+  font-size:.94rem;
+  padding:13px 22px;
+  border-radius:var(--radius-sm);
+  border:1.5px solid transparent;
+  cursor:pointer;
+  transition:transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.btn:hover:not(:disabled){transform:translateY(-1px);}
+.btn:disabled{opacity:.42; cursor:not-allowed; transform:none;}
+.btn-primary{
+  background:var(--forest);
+  border-color:var(--forest);
+  color:var(--on-forest);
+}
+.btn-primary:hover:not(:disabled){background:var(--forest-hover); border-color:var(--forest-hover);}
+.btn-primary:active:not(:disabled){background:var(--forest-active); border-color:var(--forest-active);}
+.btn-ghost{
+  background:var(--surface-2);
+  color:var(--ink);
+  border-color:var(--border-strong);
+}
+.btn-ghost:hover:not(:disabled){background:#E6EBE6;}
+
+/* ---------- results ---------- */
+#screen-results{
+  background:var(--result-bg, var(--bg));
+  transition:background .4s ease;
+}
+.result-hero{
+  text-align:center;
+  padding:8px 0 6px;
+}
+.result-hero .display{font-size:1.5rem; font-weight:600; color:var(--ink-secondary);}
+.result-badge-wrap{
+  display:flex;
+  justify-content:center;
+  margin:20px 0 14px;
+}
+@keyframes resultPop{
+  0%{transform:scale(.85); opacity:0;}
+  100%{transform:scale(1); opacity:1;}
+}
+.result-badge-wrap svg{animation:resultPop .5s cubic-bezier(.25,1,.4,1) both;}
+.result-type-name{font-size:2rem; font-weight:700;}
+.result-type-sub{color:var(--ink-secondary); margin-top:6px; font-size:.98rem;}
+
+.section-title{
+  font-size:1.02rem;
+  font-weight:600;
+  color:var(--ink);
+  margin:36px 0 16px;
+}
+
+.bar-row{
+  display:grid;
+  grid-template-columns:150px 1fr 46px;
+  align-items:center;
+  gap:12px;
+  margin-bottom:11px;
+  font-size:.9rem;
+}
+.bar-name{font-weight:600;}
+.bar-track{
+  display:block;
+  height:10px;
+  background:var(--surface-2);
+  border-radius:999px;
+  overflow:hidden;
+}
+.bar-fill{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  width:0%;
+  transition:width 1s cubic-bezier(.2,.8,.2,1);
+}
+.bar-pct{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  color:var(--ink-muted);
+  font-weight:500;
+}
+
+.table-wrap{
+  overflow-x:auto;
+  margin-top:8px;
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+}
+.compare-table{
+  width:100%;
+  min-width:460px;
+  border-collapse:collapse;
+  font-size:.86rem;
+}
+.compare-table thead th{
+  text-align:left;
+  font-size:.76rem;
+  font-weight:600;
+  color:var(--ink-muted);
+  padding:12px 14px;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+.compare-table tbody th{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-align:left;
+  font-weight:600;
+  color:var(--ink);
+  padding:12px 14px;
+  white-space:nowrap;
+}
+.compare-table tbody th .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+.compare-table td{
+  padding:12px 14px;
+  vertical-align:middle;
+}
+.compare-table tbody tr:not(:last-child) th,
+.compare-table tbody tr:not(:last-child) td{
+  border-bottom:1px solid var(--border);
+}
+.ct-pt{font-weight:600; color:var(--ink); font-variant-numeric:tabular-nums;}
+.ct-pct{display:block; font-size:.78rem; color:var(--ink-muted); font-variant-numeric:tabular-nums;}
+
+.type-cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:8px;
+}
+@media (max-width:560px){
+  .type-cards{grid-template-columns:1fr;}
+}
+.type-card{
+  border-radius:var(--radius-md);
+  padding:18px 18px 20px;
+  border:1px solid var(--border);
+}
+.type-card .th{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+.type-card h3{font-size:1.04rem; font-weight:600;}
+.type-card p{margin:0; font-size:.9rem; color:var(--ink-secondary); line-height:1.55;}
+.type-card.dominant{
+  border-width:1.5px;
+  box-shadow:var(--shadow-sm);
+}
+
+.quadrant-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  margin:16px 0 8px;
+}
+.quadrant-circle-box{
+  width:100%;
+  max-width:300px;
+}
+.quadrant-circle-box svg{display:block; width:100%; height:auto;}
+.quadrant-dot-svg{
+  transition:cx .8s cubic-bezier(.2,.8,.2,1), cy .8s cubic-bezier(.2,.8,.2,1);
+}
+.quadrant-legend{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px 18px;
+}
+.quadrant-legend-item{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:.78rem;
+  font-weight:600;
+  color:var(--ink-secondary);
+}
+.quadrant-legend-item .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+.quadrant-axes{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  font-size:.78rem;
+  color:var(--ink-muted);
+  text-align:center;
+}
+
+.venn-arrow{font-size:.72rem; font-weight:600; color:var(--ink-muted);}
+
+.pd-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:16px;
+}
+.pd-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:18px 18px 20px;
+}
+.pd-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+.pd-side{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  font-size:.9rem;
+  color:var(--ink);
+}
+.pd-plus{color:var(--ink-muted); font-weight:700; font-size:.9rem;}
+.pd-dynamic{
+  font-size:.88rem;
+  color:var(--ink-secondary);
+  font-style:italic;
+  margin:0 0 12px;
+  line-height:1.5;
+}
+.pd-row{
+  font-size:.88rem;
+  color:var(--ink-secondary);
+  line-height:1.55;
+  margin:0 0 8px;
+}
+.pd-row:last-child{margin-bottom:0;}
+.pd-row b{color:var(--ink); font-weight:700;}
+
+.connection-group-title{
+  font-size:.92rem;
+  font-weight:700;
+  color:var(--ink);
+  margin:26px 0 12px;
+}
+.connection-group-title:first-of-type{margin-top:20px;}
+.connection-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.connection-row{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:12px 16px;
+}
+.connection-row svg{flex:none;}
+.connection-info{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  flex:1;
+  min-width:0;
+}
+.connection-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  font-size:.86rem;
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.3;
+}
+.connection-side{display:inline-flex; align-items:center; gap:5px;}
+.connection-side .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+.connection-caption{font-size:.76rem; color:var(--ink-muted);}
+.connection-pct{
+  font-weight:700;
+  font-size:1.02rem;
+  font-variant-numeric:tabular-nums;
+  flex:none;
+  margin-left:auto;
+}
+@media (max-width:420px){
+  .connection-row{flex-wrap:wrap;}
+  .connection-pct{margin-left:0; order:3; width:100%; text-align:right;}
+}
+
+.warning-box{
+  margin-top:34px;
+  padding:18px 20px;
+  border-radius:var(--radius-md);
+  background:var(--surface-2);
+  font-size:.86rem;
+  color:var(--ink-secondary);
+  line-height:1.55;
+}
+
+.result-actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:34px;
+  flex-wrap:wrap;
+}
+.btn-icon{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.btn-icon svg{flex:none;}
+
+/* ---------- print / pdf export ---------- */
+@media print{
+  body{background:#fff;}
+  .app{max-width:none; padding:0;}
+  .card, #screen-results{
+    box-shadow:none;
+    border:none;
+    padding:0;
+    background:#fff !important;
+  }
+  .result-actions{display:none;}
+  .type-card, .compare-table, .bar-track{
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .bar-fill{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  .type-cards{grid-template-columns:1fr 1fr;}
+}
+</style>
+
+<div class="app" id="app">
+
+  <div class="topbar" id="topbar">
+    <div class="brand">
+      <span class="display">DISC teszt</span>
+      <span class="step-label" id="stepLabel"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-meta">
+      <span class="progress-message" id="progressMessage">Kezdjük szépen</span>
+      <span class="progress-count" id="progressCount">0 / 64</span>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- INTRO -->
+    <section id="screen-intro" class="card">
+      <div class="decor-blob" style="width:170px;height:170px;top:-90px;left:-90px;background:var(--s-selected);"></div>
+      <div class="decor-blob" style="width:150px;height:150px;top:-80px;right:-90px;background:var(--i-selected);"></div>
+      <div class="decor-blob" style="width:160px;height:160px;bottom:-90px;right:-80px;background:var(--c-selected);"></div>
+      <div class="decor-blob" style="width:140px;height:140px;bottom:-80px;left:-80px;background:var(--d-selected);"></div>
+
+      <div class="card-content">
+        <p class="eyebrow">Önismereti kérdőív &middot; 10–15 perc</p>
+        <h1 class="display" style="font-size:1.9rem; margin-top:10px;">Melyik DISC típus vagy?</h1>
+        <p class="lede">Egy nyugodt, játékos önismereti kirándulás a klasszikus DISC-modell alapján, három rövid részben. Válaszolj ösztönösen — nincs jó vagy rossz válasz, csak az, ami most rád jellemző.</p>
+
+        <div class="intro-types">
+          <div class="intro-type"><span id="introBadge-d"></span><span>D<br>Domináns</span></div>
+          <div class="intro-type"><span id="introBadge-i"></span><span>I<br>Befolyásoló</span></div>
+          <div class="intro-type"><span id="introBadge-s"></span><span>S<br>Stabilitást kereső</span></div>
+          <div class="intro-type"><span id="introBadge-c"></span><span>C<br>Alapos / Konform</span></div>
+        </div>
+
+        <ul class="legend-list">
+          <li><span class="legend-swatch" style="background:var(--d)"></span> 1. Viselkedés — 24 pár, csúszkával</li>
+          <li><span class="legend-swatch" style="background:var(--i)"></span> 2. Környezet — 20 igen/nem kérdés</li>
+          <li><span class="legend-swatch" style="background:var(--s)"></span> 3. Megjelenés — 20 igen/nem kérdés</li>
+        </ul>
+
+        <div class="about-disc">
+          <p class="section-title" style="margin-top:0;">Fedezze fel személyiségtípusát</p>
+          <p class="lede">A DISC rövidítés majdnem száz éve született: William Moulton Marston amerikai pszichológus alkotta meg 1928-ban, az „Emotions of Normal People" című könyvében. Marston azt figyelte meg, hogy az emberi viselkedés két tengely mentén írható le — aktív vagy visszafogott, illetve feladat- vagy emberközpontú —, és ebből a négy mezőből rajzolta fel a Dominancia, Interakció, Stabilitás és Megfelelés típusait. Kérdőívvé csak évtizedekkel később, az 1970–80-as években alakították tanácsadók és pszichológusok. A célja azóta is ugyanaz: nem skatulyáz, csak támpontot ad ahhoz, hogyan kommunikálsz, döntesz és dolgozol együtt másokkal.</p>
+        </div>
+
+        <div class="nav-row" style="justify-content:flex-end">
+          <button class="btn btn-primary" id="btnStart">Kezdjük →</button>
+        </div>
+        <div class="nav-row" id="resumeRow" style="display:none; justify-content:center;">
+          <button class="btn btn-ghost" id="btnReset">Korábbi válaszok törlése és újrakezdés</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUESTION -->
+    <section id="screen-question" class="card hidden">
+      <div class="q-meta">
+        <span class="q-badge" id="qTestLabel"></span>
+        <span class="q-number" id="qNumber"></span>
+      </div>
+
+      <div id="scaleBlock" class="hidden">
+        <p class="q-text" id="scaleQuestionText"></p>
+        <p class="q-hint">Csúsztasd afelé, amelyik közelebb áll hozzád.</p>
+        <div class="scale-slider-wrap">
+          <div class="scale-labels">
+            <span class="left" id="scaleLeftLabel"></span>
+            <span class="right" id="scaleRightLabel"></span>
+          </div>
+          <input type="range" class="scale-slider" id="scaleSlider" min="1" max="4" step="1" value="2">
+        </div>
+      </div>
+
+      <div id="yesnoBlock" class="hidden">
+        <p class="q-text" id="yesnoQuestionText"></p>
+        <p class="q-hint">Ne gondold túl — válaszd azt, ami elsőre közelebb áll hozzád.</p>
+        <div class="yesno">
+          <button class="yesno-btn" data-val="true">Igen<svg class="yesno-check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#26332F"/><path d="M7 12.5l3 3 7-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="yesno-btn" data-val="false">Nem<svg class="yesno-check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#26332F"/><path d="M7 12.5l3 3 7-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" id="btnBack">← Vissza</button>
+        <button class="btn btn-primary" id="btnNext" disabled>Tovább →</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- RESULTS (own wide shell, injected on completion) -->
+  <div id="screen-results" class="hidden"></div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= DATA ================= */
+
+var TYPE_INFO = {
+  d: {
+    letter:"D",
+    name:"Domináns (D)",
+    sub:"Piros",
+    desc:"Célorientált, határozott, direkt és a kihívásokat keresi; szeret irányítani és gyors eredményeket elérni."
+  },
+  i: {
+    letter:"I",
+    name:"Befolyásoló (I)",
+    sub:"Sárga",
+    desc:"Társaságkedvelő, optimista, inspiráló és nyitott; élvezi a közösséget, az emberi kapcsolatokat és az új ötleteket."
+  },
+  s: {
+    letter:"S",
+    name:"Stabilitást kereső (S)",
+    sub:"Zöld",
+    desc:"Megbízható, türelmes, nyugodt és együttműködő; fontos számára a biztonság, a harmónia és a kiszámítható tempó."
+  },
+  c: {
+    letter:"C",
+    name:"Alapos / Konform (C)",
+    sub:"Kék",
+    desc:"Részletorientált, szabálykövető, logikus és precíz; előnyben részesíti a pontosságot, a tényeket és a minőségi munkát."
+  }
+};
+var TYPE_ORDER = ["d","i","s","c"];
+
+// Tájékoztató jellegű, klasszikus DISC-kerék alapján becsült átfedési arányok:
+// a szomszédos típusok (D-I, I-S, S-C, C-D) jellemzően jobban hasonlítanak
+// egymásra, mint az átlósan szemközti párok (D-S, I-C).
+var OVERLAP_PAIRS = [
+  ["d","i",55],
+  ["i","s",55],
+  ["s","c",50],
+  ["c","d",45],
+  ["d","s",15],
+  ["i","c",15]
+];
+
+// Mind a négy DISC-típus középpontjában az emberi viselkedés és kommunikáció áll,
+// de eltér a tempójuk és a prioritásaik. A szomszédos típusok egy tengelyt
+// (tempó vagy fókusz) osztanak meg, az átlós ellentétek gyakorlatilag egyiket sem.
+var PAIR_DYNAMICS = [
+  ["d","i",
+    "Nagy energiájú, gyors tempójú páros — mindkettőjüket a lendület és a gyors haladás jellemzi.",
+    "A domináns hajtja a stratégiát és az eredményeket, a befolyásoló pedig eladja a víziót, és lelkesíti maga mellé a csapatot.",
+    "A domináns túl bőbeszédűnek vagy szervezetlennek találhatja a befolyásolót; a befolyásoló túl nyersnek vagy erőszakosnak érezheti a dominánst."
+  ],
+  ["i","s",
+    "Erősen együttműködő, emberközpontú páros.",
+    "A befolyásoló kreatív ötleteket és lelkesedést hoz, a stabilitást kereső pedig támogató környezetet és megbízható végrehajtást biztosít.",
+    "Mindketten hajlamosak elkerülni a szükséges konfliktusokat vagy a nehéz teljesítménybeszélgetéseket, csak hogy megőrizzék a harmóniát."
+  ],
+  ["s","c",
+    "Folyamatorientált, óvatos páros.",
+    "A stabilitást kereső türelemmel kezeli a folyamat emberi oldalát, az alapos / konform típus pedig biztosítja a megfelelést, a minőségellenőrzést és az adatok pontosságát.",
+    "Együtt könnyen „elemzési bénultságba” eshetnek, és nehezen alkalmazkodnak gyorsan a változáshoz."
+  ],
+  ["c","d",
+    "Logika- és feladatvezérelt páros.",
+    "A domináns kitűzi a nagyratörő célokat, az alapos / konform típus pedig részletes, pontos terveket épít, hogy biztonságosan el is érjék azokat.",
+    "A domináns a sebességet, az alapos / konform típus inkább a pontosságot helyezi előtérbe — ez torlódásokhoz vezethet."
+  ],
+  ["d","s",
+    "Kapcsolati egyensúly — ellentétes páros, gyakorlatilag közös tengely nélkül.",
+    "A domináns a gyors végrehajtásért és növekedésért nyomul, a stabilitást kereső pedig a csapat stabilitását, konszenzusát és a végigvitelt biztosítja.",
+    "A domináns agresszív határidőkkel hajthatja a stabilitást keresőt; az pedig ellenállhat a domináns hirtelen változtatásainak."
+  ],
+  ["i","c",
+    "Ötletgenerálás vs. valóságellenőrzés — ellentétes páros, gyakorlatilag közös tengely nélkül.",
+    "A befolyásoló optimizmust és innovatív ötleteket hoz, az alapos / konform típus pedig realitáshoz igazítja az adatokat, hogy megbizonyosodjon a megvalósíthatóságról.",
+    "A befolyásoló pesszimista ünneprontónak láthatja az alapos / konform típust; az pedig meggondolatlannak, kaotikusnak vagy felszínesnek a befolyásolót."
+  ]
+];
+
+// --- Test 1: pairs ---
+var t1GroupI = [
+  ["Mások véleményét gyakran vitatom","Mások véleményét elfogadom, konfliktuskerülés"],
+  ["Vezetőtípus vagyok","Beosztott-típus vagyok"],
+  ["Feladatcentrikus, racionális vagyok","Emocionális, érzékeny, együttérző vagyok"],
+  ["Türelmetlen vagyok","Türelmes vagyok"],
+  ["Beszédem gyors és sodró","Beszédem lassú, megfontolt"],
+  ["Szókimondó vagyok","Tapintatos vagyok"],
+  ["Aktív, gyors mozgású vagyok","Nyugodt, lassú járású vagyok"],
+  ["Magabiztos vagyok","Tétovázó vagyok"],
+  ["Gyors döntésű, kockázatvállaló","Megfontoltság, kockázatkerülés jellemez"],
+  ["Határozottság jellemez, sok gesztus","Visszafogottság jellemez, kevés gesztus"],
+  ["Meggyőzéshez felemelem a hangom","Általában halk beszédű vagyok"],
+  ["Küzdő és törekvő vagyok","Együttműködő és alkalmazkodó vagyok"]
+];
+var t1GroupII = [
+  ["Nyílt és közvetlen vagyok","Óvatos és távolságtartó vagyok"],
+  ["Spontán vagyok","Kontrollált, fegyelmezett vagyok"],
+  ["Hangsúly a kapcsolaton","Hangsúly a tényeken"],
+  ["Felületes vagyok","Alapos, részleteket szem előtt tartó vagyok"],
+  ["Társaságom bőbeszédű és csapongó","Társaságom célirányos és rendszerezett"],
+  ["Sok kéz- és testmozgás jellemez","Kevés kéz- és testmozgás jellemez"],
+  ["Dinamikus vagyok","Nyugodt vagyok"],
+  ["Szórakozott, rendszertelen vagyok","Megfontolt, rendszerezett vagyok"],
+  ["Kreatív vagyok","Elemző vagyok"],
+  ["Élénk, atraktív az arckifejezésem","Pókerarc jellemez"],
+  ["Meleg és barátságos vagyok","Hideg és kimért vagyok"],
+  ["Intuitív a gondolkodásom","Konvencionális a gondolkodásom"]
+];
+
+// --- Test 2: environment ---
+var t2Questions = [
+  "Szeretem és ápolom magam körül a zöld növényeket.",
+  "Gyakran előfordul, hogy rendetlenség van körülöttem.",
+  "Nagy méretű íróasztalom van.",
+  "Dokumentumaimat mindig mappákba rendezem papíron vagy számítógépen.",
+  "Naptár, térkép vagy grafikon van a falamon.",
+  "Asztalomon családi fotó van.",
+  "Van a környezetemben fénykép, bulikról, csapatépítőről vagy kirándulásról.",
+  "Nálam díjak, serleg, kupa vagy diplomák vannak a polcon, falakon.",
+  "Szeretem a tágas tereket, nagy ablakokat.",
+  "A jó minőségű, elegáns bútorokat szeretem.",
+  "A kaktusz az egyetlen növény, amelyik nem szárad ki nálam.",
+  "Irodámban csak nekem van székem, hiszen a munka az első.",
+  "Szeretem otthonossá tenni munkahelyi környezetemet.",
+  "A számítógépemen lévő háttérkép a gyerekeimet ábrázolja.",
+  "Szeretem a színes, konfiguratív vagy modern művészeti alkotásokat.",
+  "A világos, pasztellszíneket kedvelem.",
+  "Az irodám tiszta és egyszerű.",
+  "Csak az van előttem, amivel éppen foglalkozom, minden mást elpakolok.",
+  "Irodámban a nagy méretű fotóelemben szeretek ülni.",
+  "Sok újság, magazin vagy akta halmozódott fel az asztalomon."
+];
+var t2Map = {
+  d:[2,3,8,9,10,12,18],
+  i:[1,6,7,13,14,15,16,19],
+  s:[1,5,6,7,13,14,16],
+  c:[4,5,8,9,10,11,15,17,20]
+};
+
+// --- Test 3: appearance ---
+var t3Questions = [
+  "A kényelmes ruhadarabokat kedvelem.",
+  "Szeretem a kiegészítőket.",
+  "Márkás, drága órám vagy telefonom van.",
+  "Mindig az alkalomhoz illő ruhát választok.",
+  "A sötétebb ruhadarabokat kedvelem.",
+  "Szeretem a természetes ruhadarabokat (pamut, gyapjú, lenvászon).",
+  "Sok feltűnő ruhám van.",
+  "Bőbeszédű, dinamikus vagyok.",
+  "A klasszikus elegancia jellemez.",
+  "Szeretek ízlésesen öltözködni.",
+  "A világos, pasztellszíneket kedvelem.",
+  "Gyakran változtatom a frizurám.",
+  "A modern, divatos ruhákat szeretem.",
+  "Gyakran jó minőségű öltönyben vagy kosztümben járok.",
+  "Nagyon fontos számomra, hogy az órám megbízható és pontos legyen.",
+  "Van néhány kedvenc ruhadarabom, többnyire azokat viselem.",
+  "A legfőbb szempont az öltözködésemben a praktikusság.",
+  "Hangom monoton, visszahúzódó, hűvös.",
+  "Inkább lefelé nézek, kerülöm a közvetlen szemkontaktust, ahogy mások mellé érek.",
+  "Hangom erős, tiszta, magabiztos."
+];
+var t3Map = {
+  d:[3,5,8,14,20],
+  i:[2,7,11,12,13],
+  s:[1,6,10,16,17],
+  c:[4,9,14,15,18,19]
+};
+
+/* ================= BUILD FLOW ================= */
+
+var flow = [];
+t1GroupI.forEach(function(pair,i){
+  flow.push({type:"scale", test:1, group:"I", idx:i, left:pair[0], right:pair[1], label:"1. Viselkedés"});
+});
+t1GroupII.forEach(function(pair,i){
+  flow.push({type:"scale", test:1, group:"II", idx:i, left:pair[0], right:pair[1], label:"1. Viselkedés"});
+});
+t2Questions.forEach(function(text,i){
+  flow.push({type:"yesno", test:2, idx:i, text:text, label:"2. Környezet"});
+});
+t3Questions.forEach(function(text,i){
+  flow.push({type:"yesno", test:3, idx:i, text:text, label:"3. Megjelenés"});
+});
+
+var TOTAL = flow.length; // 64
+
+/* ================= STATE / STORAGE ================= */
+
+var STORAGE_KEY = "disc_teszt_v1";
+var state = loadState();
+
+function defaultState(){
+  return { answers:{}, step:0 };
+}
+function loadState(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    var parsed = JSON.parse(raw);
+    if(!parsed || typeof parsed !== "object") return defaultState();
+    return { answers: parsed.answers || {}, step: parsed.step || 0 };
+  }catch(e){ return defaultState(); }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+function answerKey(item){
+  return "t"+item.test+"_"+(item.group||"")+"_"+item.idx;
+}
+
+/* ================= TYPE BADGE (SVG) ================= */
+
+function typeBadge(colorVar, letter, size){
+  size = size || 46;
+  return '<svg class="type-badge" width="'+size+'" height="'+size+'" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+    '<circle cx="32" cy="32" r="30" fill="var('+colorVar+')"/>'+
+    '<text x="32" y="33" text-anchor="middle" dominant-baseline="central" font-family="Manrope, sans-serif" font-weight="700" font-size="27" fill="#FFFFFF">'+letter+'</text>'+
+  '</svg>';
+}
+
+function pdfIcon(){
+  return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+    '<path d="M6 2h8l4 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'+
+    '<path d="M14 2v4a1 1 0 0 0 1 1h4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'+
+    '<path d="M12 11v7m0 0-3-3m3 3 3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'+
+  '</svg>';
+}
+
+document.getElementById("introBadge-d").innerHTML = typeBadge("--d","D",42);
+document.getElementById("introBadge-i").innerHTML = typeBadge("--i","I",42);
+document.getElementById("introBadge-s").innerHTML = typeBadge("--s","S",42);
+document.getElementById("introBadge-c").innerHTML = typeBadge("--c","C",42);
+
+/* ================= DOM refs ================= */
+
+var screenIntro = document.getElementById("screen-intro");
+var screenQuestion = document.getElementById("screen-question");
+var screenResults = document.getElementById("screen-results");
+var topbar = document.getElementById("topbar");
+
+var progressFill = document.getElementById("progressFill");
+var progressMessageEl = document.getElementById("progressMessage");
+var progressCount = document.getElementById("progressCount");
+var stepLabel = document.getElementById("stepLabel");
+
+var qTestLabel = document.getElementById("qTestLabel");
+var qNumber = document.getElementById("qNumber");
+var scaleBlock = document.getElementById("scaleBlock");
+var yesnoBlock = document.getElementById("yesnoBlock");
+var scaleQuestionText = document.getElementById("scaleQuestionText");
+var scaleLeftLabel = document.getElementById("scaleLeftLabel");
+var scaleRightLabel = document.getElementById("scaleRightLabel");
+var scaleSlider = document.getElementById("scaleSlider");
+
+var SCALE_MIN_SIZE = 0.95, SCALE_MAX_SIZE = 1.7;
+function updateScaleEmphasis(v){
+  var t = (v - 1) / 3; // 0 = full left, 1 = full right
+  var leftSize = SCALE_MAX_SIZE - t * (SCALE_MAX_SIZE - SCALE_MIN_SIZE);
+  var rightSize = SCALE_MIN_SIZE + t * (SCALE_MAX_SIZE - SCALE_MIN_SIZE);
+  scaleLeftLabel.style.fontSize = leftSize.toFixed(2) + "rem";
+  scaleRightLabel.style.fontSize = rightSize.toFixed(2) + "rem";
+  scaleLeftLabel.style.fontWeight = leftSize >= rightSize ? "700" : "400";
+  scaleRightLabel.style.fontWeight = rightSize >= leftSize ? "700" : "400";
+  scaleLeftLabel.style.color = leftSize >= rightSize ? "var(--ink)" : "var(--ink-muted)";
+  scaleRightLabel.style.color = rightSize >= leftSize ? "var(--ink)" : "var(--ink-muted)";
+}
+var yesnoQuestionText = document.getElementById("yesnoQuestionText");
+var btnBack = document.getElementById("btnBack");
+var btnNext = document.getElementById("btnNext");
+var btnStart = document.getElementById("btnStart");
+var btnReset = document.getElementById("btnReset");
+var resumeRow = document.getElementById("resumeRow");
+
+/* ================= INTRO / RESUME ================= */
+
+if(Object.keys(state.answers).length > 0){
+  resumeRow.style.display = "flex";
+  btnStart.textContent = "Folytatás →";
+}
+btnStart.addEventListener("click", function(){
+  showScreen("question");
+  renderStep();
+});
+btnReset.addEventListener("click", function(){
+  state = defaultState();
+  saveState();
+  resumeRow.style.display = "none";
+  btnStart.textContent = "Kezdjük →";
+});
+
+/* ================= SCREEN SWITCH ================= */
+
+function showScreen(name){
+  screenIntro.classList.toggle("hidden", name!=="intro");
+  screenQuestion.classList.toggle("hidden", name!=="question");
+  screenResults.classList.toggle("hidden", name!=="results");
+  topbar.style.visibility = (name==="results") ? "hidden" : "visible";
+  window.scrollTo({top:0, behavior:"instant"});
+}
+
+/* ================= PROGRESS ================= */
+
+function progressMessage(pct){
+  if(pct <= 0) return "Kezdjük szépen";
+  if(pct < 30) return "Szép tempó 🌿";
+  if(pct < 60) return "Jól haladsz 🌿";
+  if(pct < 90) return "Már több mint félúton";
+  if(pct < 100) return "Mindjárt kész vagy";
+  return "Kész is vagy! ✨";
+}
+
+function updateProgress(){
+  var answered = Object.keys(state.answers).length;
+  var pct = Math.round((answered/TOTAL)*100);
+  progressFill.style.width = pct+"%";
+  progressMessageEl.textContent = progressMessage(pct);
+  progressCount.textContent = answered+" / "+TOTAL;
+  var item = flow[state.step];
+  stepLabel.textContent = item ? item.label : "";
+}
+
+/* ================= RENDER STEP ================= */
+
+function playEnterAnimation(){
+  screenQuestion.classList.remove("q-enter");
+  void screenQuestion.offsetWidth;
+  screenQuestion.classList.add("q-enter");
+}
+
+function renderStep(){
+  var item = flow[state.step];
+  if(!item){ finish(); return; }
+
+  qTestLabel.textContent = item.label;
+  qNumber.textContent = (state.step+1)+" / "+TOTAL;
+
+  var key = answerKey(item);
+  var existing = state.answers[key];
+
+  if(item.type === "scale"){
+    scaleBlock.classList.remove("hidden");
+    yesnoBlock.classList.add("hidden");
+    scaleQuestionText.textContent = item.left + " ↔ " + item.right;
+    scaleLeftLabel.textContent = item.left;
+    scaleRightLabel.textContent = item.right;
+    var initialVal = existing !== undefined ? existing : 2;
+    if(existing === undefined){
+      state.answers[key] = initialVal;
+      saveState();
+      existing = initialVal;
+    }
+    scaleSlider.value = initialVal;
+    updateScaleEmphasis(initialVal);
+    scaleSlider.oninput = function(){
+      updateScaleEmphasis(parseInt(scaleSlider.value,10));
+    };
+    scaleSlider.onchange = function(){
+      state.answers[key] = parseInt(scaleSlider.value,10);
+      saveState();
+      renderStep();
+      updateProgress();
+    };
+  } else {
+    scaleBlock.classList.add("hidden");
+    yesnoBlock.classList.remove("hidden");
+    yesnoQuestionText.textContent = item.text;
+    var btns = yesnoBlock.querySelectorAll(".yesno-btn");
+    btns.forEach(function(btn){
+      var val = btn.getAttribute("data-val") === "true";
+      btn.disabled = false;
+      btn.classList.toggle("selected", existing===val);
+      btn.setAttribute("aria-pressed", String(existing===val));
+      btn.onclick = function(){
+        btns.forEach(function(b){
+          b.classList.toggle("selected", b===btn);
+          b.setAttribute("aria-pressed", String(b===btn));
+          b.disabled = true;
+        });
+        state.answers[key] = val;
+        saveState();
+        updateProgress();
+        setTimeout(goNext, 230);
+      };
+    });
+  }
+
+  btnBack.disabled = state.step === 0;
+  btnNext.disabled = (existing === undefined);
+  btnNext.textContent = (state.step === TOTAL-1) ? "Eredmény →" : "Tovább →";
+
+  updateProgress();
+  playEnterAnimation();
+}
+
+btnBack.addEventListener("click", function(){
+  if(state.step > 0){
+    state.step -= 1;
+    saveState();
+    renderStep();
+  }
+});
+function goNext(){
+  if(state.step < TOTAL-1){
+    state.step += 1;
+    saveState();
+    renderStep();
+  } else {
+    finish();
+  }
+}
+btnNext.addEventListener("click", goNext);
+
+/* ================= SCORING ================= */
+
+function scoreTest1(){
+  var s = {d:0, i:0, s:0, c:0};
+  t1GroupI.forEach(function(_,i){
+    var v = state.answers[answerKey({test:1,group:"I",idx:i})];
+    if(v===1||v===2) s.d++;
+    if(v===3||v===4) s.s++;
+  });
+  t1GroupII.forEach(function(_,i){
+    var v = state.answers[answerKey({test:1,group:"II",idx:i})];
+    if(v===1||v===2) s.i++;
+    if(v===3||v===4) s.c++;
+  });
+  return s;
+}
+
+function scoreYesNo(test, map){
+  var s = {d:0, i:0, s:0, c:0};
+  TYPE_ORDER.forEach(function(color){
+    map[color].forEach(function(qNum){
+      var i = qNum - 1;
+      var v = state.answers[answerKey({test:test,group:"",idx:i})];
+      if(v === true) s[color]++;
+    });
+  });
+  return s;
+}
+
+function sumScores(list){
+  var s = {d:0, i:0, s:0, c:0};
+  list.forEach(function(sc){
+    TYPE_ORDER.forEach(function(c){ s[c]+=sc[c]; });
+  });
+  return s;
+}
+
+function pctOfTotal(scores){
+  var total = TYPE_ORDER.reduce(function(a,c){return a+scores[c];},0);
+  var out = {};
+  TYPE_ORDER.forEach(function(c){
+    out[c] = total>0 ? Math.round((scores[c]/total)*1000)/10 : 0;
+  });
+  return out;
+}
+
+function rankedTypes(scores){
+  return TYPE_ORDER.slice().sort(function(a,b){ return scores[b]-scores[a]; });
+}
+
+function overlapPct(a,b){
+  if(a === b) return 100;
+  var match = OVERLAP_PAIRS.filter(function(p){
+    return (p[0]===a && p[1]===b) || (p[0]===b && p[1]===a);
+  })[0];
+  return match ? match[2] : 0;
+}
+
+/* ================= RESULTS RENDER ================= */
+
+function finish(){
+  var s1 = scoreTest1();
+  var s2 = scoreYesNo(2, t2Map);
+  var s3 = scoreYesNo(3, t3Map);
+  var total = sumScores([s1,s2,s3]);
+
+  var pctTotal = pctOfTotal(total);
+  var rankTotal = rankedTypes(total);
+  var domColor = rankTotal[0];
+  var secondColor = rankTotal[1];
+  var dom = TYPE_INFO[domColor];
+
+  var html = '';
+  html += '<div class="app wide">';
+  html += '  <div class="card">';
+  html += '    <div class="result-hero">';
+  html += '      <p class="eyebrow">Az eredményed</p>';
+  html += '      <div class="result-badge-wrap">'+typeBadge("--"+domColor, dom.letter, 88)+'</div>';
+  html += '      <h1 class="display result-type-name" style="color:var(--'+domColor+'-dark)">'+dom.name+'</h1>';
+  html += '      <p class="result-type-sub">'+dom.sub+' &middot; a domináns típusod '+pctTotal[domColor]+'%-on</p>';
+  html += '      <p class="lede" style="max-width:480px;margin-left:auto;margin-right:auto;">'+dom.desc+'</p>';
+  html += '    </div>';
+
+  html += '    <p class="section-title">Összesített arányok</p>';
+  rankTotal.forEach(function(c){
+    html += barRow(TYPE_INFO[c].name, c, pctTotal[c]);
+  });
+
+  html += '    <p class="section-title">Hol helyezkedsz el a DISC-körben?</p>';
+  html += '    <p class="lede" style="margin-top:0;">A pont a négy arányod súlyozott közepét mutatja a klasszikus DISC-körben — minél közelebb esik egy negyed széléhez, annál erősebben jellemez az az irány.</p>';
+  html += quadrantGraphic(pctTotal, domColor);
+
+  html += '    <p class="section-title">Domináns &amp; második legerősebb</p>';
+  html += '    <div class="type-cards">';
+  html += typeCard(domColor, true);
+  html += typeCard(secondColor, false);
+  html += '    </div>';
+
+  html += overlapSection(domColor, secondColor);
+
+  html += '    <p class="section-title">A három teszt összehasonlítva</p>';
+  html += compareTable(rankTotal, s1, s2, s3);
+
+  html += '    <div class="warning-box">Ez a teszt csak nagy vonalakban ad útmutatást. Valószínűleg nem a teljesen reális kép, hiszen csak azt mutatja, hogyan látod saját magadat.</div>';
+
+  html += '    <div class="result-actions">';
+  html += '      <button class="btn btn-primary" id="btnRecalc">Eredmény újraszámolása</button>';
+  html += '      <button class="btn btn-ghost btn-icon" id="btnPdf">'+pdfIcon()+' PDF letöltése</button>';
+  html += '      <button class="btn btn-ghost" id="btnRestart">Újrakezdés</button>';
+  html += '    </div>';
+
+  html += '  </div>';
+  html += '</div>';
+
+  screenResults.innerHTML = html;
+  screenResults.style.setProperty("--result-bg", "var(--"+domColor+"-soft)");
+  showScreen("results");
+
+  document.getElementById("btnRecalc").addEventListener("click", function(){
+    finish();
+  });
+  document.getElementById("btnPdf").addEventListener("click", function(){
+    window.print();
+  });
+  document.getElementById("btnRestart").addEventListener("click", function(){
+    state = defaultState();
+    saveState();
+    resumeRow.style.display = "none";
+    btnStart.textContent = "Kezdjük →";
+    screenResults.style.removeProperty("--result-bg");
+    showScreen("intro");
+  });
+
+  requestAnimationFrame(function(){
+    document.querySelectorAll(".bar-fill").forEach(function(el){
+      el.style.width = el.getAttribute("data-target")+"%";
+    });
+    var dot = document.querySelector(".quadrant-dot-svg");
+    if(dot){
+      dot.setAttribute("cx", dot.getAttribute("data-target-x"));
+      dot.setAttribute("cy", dot.getAttribute("data-target-y"));
+    }
+  });
+}
+
+function barRow(label, color, pct){
+  return '<div class="bar-row">'+
+    '<span class="bar-name" style="color:var(--'+color+'-dark)">'+label+'</span>'+
+    '<span class="bar-track"><span class="bar-fill" data-target="'+pct+'" style="background:var(--'+color+')"></span></span>'+
+    '<span class="bar-pct">'+pct+'%</span>'+
+  '</div>';
+}
+
+function polarPoint(cx, cy, r, deg){
+  var rad = deg * Math.PI / 180;
+  return { x: cx + r*Math.sin(rad), y: cy - r*Math.cos(rad) };
+}
+
+function wedgePath(cx, cy, r, a1, a2){
+  var p1 = polarPoint(cx,cy,r,a1);
+  var p2 = polarPoint(cx,cy,r,a2);
+  return 'M'+cx+','+cy+' L'+p1.x+','+p1.y+' A'+r+','+r+' 0 0 1 '+p2.x+','+p2.y+' Z';
+}
+
+function quadrantDotOffset(pctTotal, r){
+  // D = top-left, I = top-right, C = bottom-left, S = bottom-right.
+  // Horizontal axis: task-focused (D/C, left) <-> people-focused (I/S, right).
+  // Vertical axis: fast-paced (D/I, top) <-> reflective (C/S, bottom).
+  var ux = (pctTotal.i + pctTotal.s)/100*2 - 1;
+  var uy = (pctTotal.c + pctTotal.s)/100*2 - 1;
+  var maxOffset = r*0.82;
+  var dx = ux*maxOffset, dy = uy*maxOffset;
+  var mag = Math.sqrt(dx*dx + dy*dy);
+  if(mag > maxOffset){ dx = dx/mag*maxOffset; dy = dy/mag*maxOffset; }
+  return {dx:dx, dy:dy};
+}
+
+function quadrantGraphic(pctTotal, domColor){
+  var width = 380, height = 300, cx = 190, cy = 150, r = 106;
+  var wedges = [
+    {color:"d", a1:270, a2:360, labelAngle:315},
+    {color:"i", a1:0,   a2:90,  labelAngle:45},
+    {color:"s", a1:90,  a2:180, labelAngle:135},
+    {color:"c", a1:180, a2:270, labelAngle:225}
+  ];
+
+  var svg = '<svg viewBox="0 0 '+width+' '+height+'" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">';
+  wedges.forEach(function(w){
+    svg += '<path d="'+wedgePath(cx,cy,r,w.a1,w.a2)+'" fill="var(--'+w.color+'-soft)" stroke="var(--surface)" stroke-width="3"/>';
+  });
+  svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="var(--border)" stroke-width="1.5"/>';
+
+  wedges.forEach(function(w){
+    var lp = polarPoint(cx, cy, r*0.64, w.labelAngle);
+    svg += '<text x="'+lp.x+'" y="'+(lp.y-2)+'" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="19" fill="var(--'+w.color+'-dark)">'+TYPE_INFO[w.color].letter+'</text>';
+    svg += '<text x="'+lp.x+'" y="'+(lp.y+17)+'" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="600" font-size="12" fill="var(--'+w.color+'-dark)">'+pctTotal[w.color]+'%</text>';
+  });
+
+  // axis marks, just outside the circle
+  svg += '<text x="'+cx+'" y="'+(cy-r-14)+'" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="600" font-size="12" fill="var(--ink-muted)">Gyors</text>';
+  svg += '<text x="'+cx+'" y="'+(cy+r+24)+'" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="600" font-size="12" fill="var(--ink-muted)">Megfontolt</text>';
+  svg += '<text x="'+(cx-r-14)+'" y="'+(cy+4)+'" text-anchor="end" font-family="Manrope, sans-serif" font-weight="600" font-size="12" fill="var(--ink-muted)">Feladat</text>';
+  svg += '<text x="'+(cx+r+14)+'" y="'+(cy+4)+'" text-anchor="start" font-family="Manrope, sans-serif" font-weight="600" font-size="12" fill="var(--ink-muted)">Ember</text>';
+
+  var off = quadrantDotOffset(pctTotal, r);
+  svg += '<circle class="quadrant-dot-svg" data-target-x="'+(cx+off.dx)+'" data-target-y="'+(cy+off.dy)+'" cx="'+cx+'" cy="'+cy+'" r="8" fill="var(--'+domColor+')" stroke="var(--surface)" stroke-width="3"/>';
+  svg += '</svg>';
+
+  var legend = TYPE_ORDER.map(function(c){
+    var n = TYPE_INFO[c].name.replace(/ \(.\)$/,'');
+    return '<span class="quadrant-legend-item"><span class="dot" style="background:var(--'+c+')"></span>'+TYPE_INFO[c].letter+' &middot; '+n+'</span>';
+  }).join('');
+
+  var html = '<div class="quadrant-wrap">';
+  html += '<div class="quadrant-circle-box">'+svg+'</div>';
+  html += '<div class="quadrant-legend">'+legend+'</div>';
+  html += '<div class="quadrant-axes"><span>&larr; Feladatközpontú &middot; Emberközpontú &rarr;</span><span>&uarr; Gyors tempó &middot; Megfontolt tempó &darr;</span></div>';
+  html += '</div>';
+  return html;
+}
+
+function typeCard(color, isDominant){
+  var info = TYPE_INFO[color];
+  return '<div class="type-card'+(isDominant?' dominant':'')+'" style="background:var(--'+color+'-soft); border-color:var(--'+color+'-selected)">'+
+    '<div class="th">'+typeBadge("--"+color, info.letter, 30)+'<h3 style="color:var(--'+color+'-dark)">'+info.name+'</h3></div>'+
+    '<p>'+info.desc+'</p>'+
+  '</div>';
+}
+
+function vennSVG(colorA, colorB, pct, size){
+  size = size || 96;
+  var height = size*0.72;
+  var r = size*0.28;
+  var pad = size*0.06;
+  // keep both circles fully inside the viewBox at every pct (0-100): at max
+  // separation the outer edge sits exactly `pad` in from the frame border.
+  var maxDist = size - 2*r - 2*pad;
+  var dist = Math.max(0, maxDist * (1 - pct/100));
+  var cx1 = size/2 - dist/2;
+  var cx2 = size/2 + dist/2;
+  var cy = height/2;
+  return '<svg width="'+size+'" height="'+height+'" viewBox="0 0 '+size+' '+height+'" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+    '<circle cx="'+cx1+'" cy="'+cy+'" r="'+r+'" fill="var('+colorA+')" fill-opacity="0.7"/>'+
+    '<circle cx="'+cx2+'" cy="'+cy+'" r="'+r+'" fill="var('+colorB+')" fill-opacity="0.7"/>'+
+  '</svg>';
+}
+
+function connectionRow(a, b){
+  var pct = overlapPct(a,b);
+  var ia = TYPE_INFO[a], ib = TYPE_INFO[b];
+  var nameA = ia.name.replace(/ \(.\)$/,'');
+  var nameB = ib.name.replace(/ \(.\)$/,'');
+  var labelHtml, captionText;
+  if(a === b){
+    labelHtml = '<span class="connection-side"><span class="dot" style="background:var(--'+a+')"></span>'+ia.letter+' &middot; '+nameA+'</span><span class="venn-arrow">&harr;</span><span class="connection-side">még egy '+nameA+' típusú ember<span class="dot" style="background:var(--'+b+')"></span></span>';
+    captionText = 'önmagaddal azonos típus';
+  } else {
+    labelHtml = '<span class="connection-side"><span class="dot" style="background:var(--'+a+')"></span>'+ia.letter+' &middot; '+nameA+'</span><span class="venn-arrow">&harr;</span><span class="connection-side">'+ib.letter+' &middot; '+nameB+'<span class="dot" style="background:var(--'+b+')"></span></span>';
+    captionText = 'kapcsolódás';
+  }
+  return '<div class="connection-row">'+
+    vennSVG("--"+a, "--"+b, pct, 64)+
+    '<span class="connection-info"><span class="connection-label">'+labelHtml+'</span><span class="connection-caption">'+captionText+'</span></span>'+
+    '<span class="connection-pct">~'+pct+'%</span>'+
+  '</div>';
+}
+
+function connectionGroup(fromColor, title){
+  var targets = TYPE_ORDER.slice().sort(function(x,y){
+    return overlapPct(fromColor,y) - overlapPct(fromColor,x);
+  });
+  var html = '<p class="connection-group-title">'+title+'</p>';
+  html += '<div class="connection-list">';
+  targets.forEach(function(toColor){
+    html += connectionRow(fromColor, toColor);
+  });
+  html += '</div>';
+  return html;
+}
+
+function pairDynamics(a, b){
+  return PAIR_DYNAMICS.filter(function(p){
+    return (p[0]===a && p[1]===b) || (p[0]===b && p[1]===a);
+  })[0];
+}
+
+function pairDynamicsCard(a, b){
+  var pd = pairDynamics(a,b);
+  var ia = TYPE_INFO[a], ib = TYPE_INFO[b];
+  var nameA = ia.name.replace(/ \(.\)$/,'');
+  var nameB = ib.name.replace(/ \(.\)$/,'');
+  return '<div class="pd-card">'+
+    '<div class="pd-header">'+
+      '<span class="pd-side">'+typeBadge("--"+a, ia.letter, 26)+ia.letter+' &middot; '+nameA+'</span>'+
+      '<span class="pd-plus">+</span>'+
+      '<span class="pd-side">'+typeBadge("--"+b, ib.letter, 26)+ib.letter+' &middot; '+nameB+'</span>'+
+    '</div>'+
+    '<p class="pd-dynamic">'+pd[2]+'</p>'+
+    '<p class="pd-row"><b>Együttműködés:</b> '+pd[3]+'</p>'+
+    '<p class="pd-row"><b>Lehetséges súrlódás:</b> '+pd[4]+'</p>'+
+  '</div>';
+}
+
+function pairDynamicsSection(){
+  var html = '<p class="section-title">Hogyan dolgoznak együtt a típusok</p>';
+  html += '<p class="lede" style="margin-top:0;">Mind a négy DISC-típus középpontjában az emberi viselkedés és a kommunikáció áll, csak a tempójuk és a prioritásaik térnek el jelentősen. Két tetszőleges típus jellemzően 25–50%-ban osztozik közös vonásokon, attól függően, hogy megosztanak-e egy viselkedési tengelyt (tempó vagy fókusz). A szomszédos típusok — amelyek egy tengelyt osztanak meg — sok mindenben hasonlítanak; az átlós ellentétek (Domináns &amp; Stabilitást kereső, illetve Befolyásoló &amp; Alapos / Konform) gyakorlatilag egy tengelyen sem osztoznak, ami gyakran természetes súrlódást okoz, ugyanakkor a legnagyobb kiegészítő potenciált is rejti.</p>';
+  html += '<div class="pd-list">';
+  PAIR_DYNAMICS.forEach(function(p){
+    html += pairDynamicsCard(p[0], p[1]);
+  });
+  html += '</div>';
+  return html;
+}
+
+function overlapSection(domColor, secondColor){
+  var dom = TYPE_INFO[domColor], second = TYPE_INFO[secondColor];
+  var domName = dom.name.replace(/ \(.\)$/,'');
+  var secondName = second.name.replace(/ \(.\)$/,'');
+  var html = '';
+  html += '<p class="section-title">Kapcsolódás más típusokkal</p>';
+  html += '<p class="lede" style="margin-top:0;">A DISC-típusodat nem önmagadban éled meg igazán, hanem akkor, amikor másokkal kommunikálsz, dolgozol vagy vitatkozol. A DISC-kerékben a szomszédos típusok (pl. D és I, vagy S és C) jellemzően könnyebben megértik egymást, mint az átlósan szemközti párok (D és S, illetve I és C). Az alábbi halmazábrák tájékoztató jellegű, klasszikus DISC-oktatási hüvelykujjszabályokat mutatnak arról, két különböző típusú ember mennyire szokott hasonlóan gondolkodni és kommunikálni, amikor egymással kapcsolódik. Például egy Domináns és egy Stabilitást kereső típusú ember jellemzően csak kb. 15–20%-ban látja hasonlóan a dolgokat.</p>';
+  html += connectionGroup(domColor, 'A domináns típusod ('+dom.letter+' &middot; '+domName+') kapcsolódása a négy típushoz');
+  html += connectionGroup(secondColor, 'A második legerősebb típusod ('+second.letter+' &middot; '+secondName+') kapcsolódása a négy típushoz');
+  html += pairDynamicsSection();
+  return html;
+}
+
+function compareTable(rankTotal, s1, s2, s3){
+  var pct1 = pctOfTotal(s1), pct2 = pctOfTotal(s2), pct3 = pctOfTotal(s3);
+  var cell = function(scores, pct, c){
+    return '<td><span class="ct-pt">'+scores[c]+' pont</span><span class="ct-pct">'+pct[c]+'%</span></td>';
+  };
+  var rows = rankTotal.map(function(c){
+    return '<tr>'+
+      '<th scope="row"><span class="dot" style="background:var(--'+c+')"></span>'+TYPE_INFO[c].name+'</th>'+
+      cell(s1, pct1, c)+
+      cell(s2, pct2, c)+
+      cell(s3, pct3, c)+
+    '</tr>';
+  }).join('');
+  return '<div class="table-wrap">'+
+    '<table class="compare-table">'+
+      '<thead><tr><th scope="col">Típus</th><th scope="col">1. Viselkedés</th><th scope="col">2. Környezet</th><th scope="col">3. Megjelenés</th></tr></thead>'+
+      '<tbody>'+rows+'</tbody>'+
+    '</table>'+
+  '</div>';
+}
+
+/* ================= INIT ================= */
+
+if(state.step >= TOTAL || (state.step > 0 && Object.keys(state.answers).length >= TOTAL)){
+  finish();
+} else {
+  showScreen("intro");
+}
+
+})();
+</script>
