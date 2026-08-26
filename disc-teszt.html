@@ -746,12 +746,6 @@ main{flex:1; display:flex; flex-direction:column; justify-content:center; paddin
           <div class="intro-type"><span id="introBadge-c"></span><span>C<br>Alapos / Konform</span></div>
         </div>
 
-        <ul class="legend-list">
-          <li><span class="legend-swatch" style="background:var(--d)"></span> 1. Viselkedés — 24 pár, csúszkával</li>
-          <li><span class="legend-swatch" style="background:var(--i)"></span> 2. Környezet — 20 igen/nem kérdés</li>
-          <li><span class="legend-swatch" style="background:var(--s)"></span> 3. Megjelenés — 20 igen/nem kérdés</li>
-        </ul>
-
         <div class="about-disc">
           <p class="section-title" style="margin-top:0;">Fedezze fel személyiségtípusát</p>
           <p class="lede">A DISC rövidítés majdnem száz éve született: William Moulton Marston amerikai pszichológus alkotta meg 1928-ban, az „Emotions of Normal People" című könyvében. Marston azt figyelte meg, hogy az emberi viselkedés két tengely mentén írható le — aktív vagy visszafogott, illetve feladat- vagy emberközpontú —, és ebből a négy mezőből rajzolta fel a Dominancia, Interakció, Stabilitás és Megfelelés típusait. Kérdőívvé csak évtizedekkel később, az 1970–80-as években alakították tanácsadók és pszichológusok. A célja azóta is ugyanaz: nem skatulyáz, csak támpontot ad ahhoz, hogyan kommunikálsz, döntesz és dolgozol együtt másokkal.</p>
@@ -904,56 +898,56 @@ var PAIR_DYNAMICS = [
 
 // --- Test 1: pairs ---
 var t1GroupI = [
-  ["Mások véleményét gyakran vitatom","Mások véleményét elfogadom, konfliktuskerülés"],
-  ["Vezetőtípus vagyok","Beosztott-típus vagyok"],
-  ["Feladatcentrikus, racionális vagyok","Emocionális, érzékeny, együttérző vagyok"],
-  ["Türelmetlen vagyok","Türelmes vagyok"],
-  ["Beszédem gyors és sodró","Beszédem lassú, megfontolt"],
-  ["Szókimondó vagyok","Tapintatos vagyok"],
-  ["Aktív, gyors mozgású vagyok","Nyugodt, lassú járású vagyok"],
-  ["Magabiztos vagyok","Tétovázó vagyok"],
-  ["Gyors döntésű, kockázatvállaló","Megfontoltság, kockázatkerülés jellemez"],
-  ["Határozottság jellemez, sok gesztus","Visszafogottság jellemez, kevés gesztus"],
-  ["Meggyőzéshez felemelem a hangom","Általában halk beszédű vagyok"],
-  ["Küzdő és törekvő vagyok","Együttműködő és alkalmazkodó vagyok"]
+  ["Nem félek nyíltan vitatkozni, ha nem értek egyet","Inkább csendben maradok, ha valaki mást gondol"],
+  ["Szeretek a döntéshozó szerepében lenni","Jobban érzem magam, ha nem nekem kell dönteni"],
+  ["Racionálisan, hidegfejjel döntök","Könnyen átérzem mások helyzetét"],
+  ["Idegesít, ha lassan haladnak a dolgok","Nem zavar, ha időbe telik valami"],
+  ["A szavaim csak úgy ömlenek belőlem","Minden mondatomat alaposan átgondolom"],
+  ["Egyenesen a lényegre térek, akár kellemetlen is","Vigyázok arra, hogy senkit ne bántsak meg szavakkal"],
+  ["Energikusan, fürgén közlekedem","Kimért, lassú mozgás jellemez"],
+  ["Nem kételkedem magamban","Sokszor tétovázom, mielőtt lépnék"],
+  ["Első ösztönömre hallgatva cselekszem","Minden lehetséges kockázatot végiggondolok előbb"],
+  ["Amikor beszélek, a kezeim is aktívan mozognak","Inkább nyugodt testtartással, kevés mozdulattal vagyok jelen"],
+  ["A hangerőmmel is nyomatékosítom a mondanivalóm","Inkább csendesen, visszafogottan fejezem ki magam"],
+  ["Küzdök, amíg el nem érem, amit akarok","Szívesen alkalmazkodom mások igényeihez"]
 ];
 var t1GroupII = [
-  ["Nyílt és közvetlen vagyok","Óvatos és távolságtartó vagyok"],
-  ["Spontán vagyok","Kontrollált, fegyelmezett vagyok"],
-  ["Hangsúly a kapcsolaton","Hangsúly a tényeken"],
-  ["Felületes vagyok","Alapos, részleteket szem előtt tartó vagyok"],
-  ["Társaságom bőbeszédű és csapongó","Társaságom célirányos és rendszerezett"],
-  ["Sok kéz- és testmozgás jellemez","Kevés kéz- és testmozgás jellemez"],
-  ["Dinamikus vagyok","Nyugodt vagyok"],
-  ["Szórakozott, rendszertelen vagyok","Megfontolt, rendszerezett vagyok"],
-  ["Kreatív vagyok","Elemző vagyok"],
-  ["Élénk, atraktív az arckifejezésem","Pókerarc jellemez"],
-  ["Meleg és barátságos vagyok","Hideg és kimért vagyok"],
-  ["Intuitív a gondolkodásom","Konvencionális a gondolkodásom"]
+  ["Könnyen szóba elegyedek idegenekkel is","Óvatosan méregetem, kiben bízhatok"],
+  ["Szeretem, ha a nap magától alakul","Előre megtervezem, mi mikor történjen"],
+  ["A kapcsolatépítés motivál a munkában","A pontos eredmény motivál a munkában"],
+  ["Gyorsan átfutok a dolgokon, a részletek másodlagosak","Minden apró részletet alaposan végignézek"],
+  ["Nálunk mindenki egyszerre beszél, sok a kitérő","Nálunk rendszerezetten, sorban haladunk egy témán"],
+  ["A testem is „beszél”, amikor mesélek valamit","Alig változtatok testtartást beszéd közben"],
+  ["Folyton történik velem valami","Szeretem, ha minden a megszokott mederben folyik"],
+  ["Hajlamos vagyok elfelejteni apróságokat","Mindenre precízen emlékszem, rendszerezve"],
+  ["Szeretek szokatlan megoldásokat kitalálni","Szeretek logikusan, lépésről lépésre elemezni"],
+  ["Az arcomon minden érzelem azonnal látszik","Nehéz leolvasni rólam, mit érzek"],
+  ["Könnyen adok bárkinek egy barátságos mosolyt","Először szakmai távolságot tartok"],
+  ["Szeretem az újszerű, szokatlan megközelítéseket","Szeretem a kipróbált, hagyományos megoldásokat"]
 ];
 
 // --- Test 2: environment ---
 var t2Questions = [
-  "Szeretem és ápolom magam körül a zöld növényeket.",
-  "Gyakran előfordul, hogy rendetlenség van körülöttem.",
-  "Nagy méretű íróasztalom van.",
-  "Dokumentumaimat mindig mappákba rendezem papíron vagy számítógépen.",
-  "Naptár, térkép vagy grafikon van a falamon.",
-  "Asztalomon családi fotó van.",
-  "Van a környezetemben fénykép, bulikról, csapatépítőről vagy kirándulásról.",
-  "Nálam díjak, serleg, kupa vagy diplomák vannak a polcon, falakon.",
-  "Szeretem a tágas tereket, nagy ablakokat.",
-  "A jó minőségű, elegáns bútorokat szeretem.",
-  "A kaktusz az egyetlen növény, amelyik nem szárad ki nálam.",
-  "Irodámban csak nekem van székem, hiszen a munka az első.",
-  "Szeretem otthonossá tenni munkahelyi környezetemet.",
-  "A számítógépemen lévő háttérkép a gyerekeimet ábrázolja.",
-  "Szeretem a színes, konfiguratív vagy modern művészeti alkotásokat.",
-  "A világos, pasztellszíneket kedvelem.",
-  "Az irodám tiszta és egyszerű.",
-  "Csak az van előttem, amivel éppen foglalkozom, minden mást elpakolok.",
-  "Irodámban a nagy méretű fotóelemben szeretek ülni.",
-  "Sok újság, magazin vagy akta halmozódott fel az asztalomon."
+  "Fontosnak tartom, hogy zöld növények vegyenek körül a munkahelyemen.",
+  "Ritkán jut időm rendet rakni magam körül.",
+  "Egy tágas, nagy asztalnál dolgozom szívesen.",
+  "Szeretek mindent jól elkülönített mappákban tárolni.",
+  "A falon egy naptár vagy statisztika mindig a szemem előtt van.",
+  "Egy kedves családi fotó díszíti a munkaasztalomat.",
+  "Szeretem kitenni a csapatépítős vagy baráti összejövetelek képeit.",
+  "A polcaimon díjak, kupák vagy oklevelek sorakoznak.",
+  "Egy világos, nagy alapterületű irodát részesítek előnyben.",
+  "Szívesen invesztálok minőségi, stílusos berendezésbe.",
+  "Nincs sok érzékem a növénygondozáshoz, csak a kaktusz éli túl.",
+  "A hatékonyság kedvéért nálam nincs hely hosszas beszélgetésekre.",
+  "Igyekszem személyes tárgyakkal otthonossá tenni az irodám.",
+  "A monitorom hátterébe a gyerekeimről választottam képet.",
+  "Szívesen díszítem a falamat modern, figyelemfelkeltő alkotásokkal.",
+  "A világos, pasztell árnyalatokat kedvelem a környezetemben.",
+  "Nem szeretem a felesleges dolgokat magam körül, minimalista vagyok.",
+  "Csak az van előttem, amin épp dolgozom, a többit elteszem.",
+  "Az irodámban egy nagyméretű, puha fotel a pihenőhelyem.",
+  "Nálam gyakran tornyosulnak a papírok, olvasnivalók."
 ];
 var t2Map = {
   d:[3,8,9,10,12,18],
@@ -964,26 +958,26 @@ var t2Map = {
 
 // --- Test 3: appearance ---
 var t3Questions = [
-  "A kényelmes ruhadarabokat kedvelem.",
-  "Szeretem a kiegészítőket.",
-  "Márkás, drága órám vagy telefonom van.",
-  "Mindig az alkalomhoz illő ruhát választok.",
-  "A sötétebb ruhadarabokat kedvelem.",
-  "Szeretem a természetes ruhadarabokat (pamut, gyapjú, lenvászon).",
-  "Sok feltűnő ruhám van.",
-  "Bőbeszédű, dinamikus vagyok.",
-  "A klasszikus elegancia jellemez.",
-  "Szeretek ízlésesen öltözködni.",
-  "A világos, pasztellszíneket kedvelem.",
-  "Gyakran változtatom a frizurám.",
-  "A modern, divatos ruhákat szeretem.",
-  "Gyakran jó minőségű öltönyben vagy kosztümben járok.",
-  "Nagyon fontos számomra, hogy az órám megbízható és pontos legyen.",
-  "Van néhány kedvenc ruhadarabom, többnyire azokat viselem.",
-  "A legfőbb szempont az öltözködésemben a praktikusság.",
-  "Hangom monoton, visszahúzódó, hűvös.",
-  "Inkább lefelé nézek, kerülöm a közvetlen szemkontaktust, ahogy mások mellé érek.",
-  "Hangom erős, tiszta, magabiztos."
+  "Nem viselek semmit, ami szorít vagy feszélyez.",
+  "Fontosak számomra az apró részletek, mint egy szép óra vagy táska.",
+  "Fontos számomra, hogy jól ismert, prémium márkákat viseljek.",
+  "Előre átgondolom, mi illik az adott eseményhez.",
+  "A visszafogott, sötét színek állnak hozzám közel.",
+  "Kerülöm a műszálas anyagokat, természetes textíliát választok.",
+  "Sok olyan ruhám van, ami azonnal magára vonja a figyelmet.",
+  "Dinamikusan, sok szóval fejezem ki magam.",
+  "Az időtlen, letisztult stílus áll hozzám közel.",
+  "Törekszem rá, hogy a megjelenésem tükrözze a jó ízlésem.",
+  "Szívesen viselek lágy, világos színű ruhákat.",
+  "Szeretek kísérletezni a hajviseletemmel.",
+  "A modern, divatos darabokat kedvelem.",
+  "Szívesen öltözöm elegáns öltönybe vagy kosztümbe.",
+  "Nem tolerálom, ha pontatlanul jár az órám.",
+  "Van néhány kedvenc darabom, amit szinte mindig hordok.",
+  "A funkcionalitás fontosabb számomra, mint a divat.",
+  "A hangszínem nem árul el sok érzelmet.",
+  "Kerülöm a közvetlen szemkontaktust idegenekkel.",
+  "Határozott hangnemben szólalok meg."
 ];
 var t3Map = {
   d:[3,5,8,14,20],
