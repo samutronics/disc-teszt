@@ -1159,7 +1159,7 @@ function renderStep(){
   if(item.type === "scale"){
     scaleBlock.classList.remove("hidden");
     yesnoBlock.classList.add("hidden");
-    scaleQuestionText.textContent = item.left + " ↔ " + item.right;
+    scaleQuestionText.textContent = "Melyik jellemzőbb rád?";
     scaleLeftLabel.textContent = item.left;
     scaleRightLabel.textContent = item.right;
     var initialVal = existing !== undefined ? existing : 2;
