@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /disc-teszt.html
+
+Sitemap: https://kiisvagyok.hu/sitemap.xml

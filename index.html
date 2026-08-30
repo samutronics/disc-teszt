@@ -1,6 +1,17 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
 <meta charset="utf-8" />
 <title>DISC teszt</title>
+<meta name="description" content="Ingyenes, játékos DISC önismereti teszt magyarul — fedezd fel 10–15 perc alatt, hogy Domináns, Befolyásoló, Stabilitást kereső vagy Alapos / Konform típus vagy-e." />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="canonical" href="https://kiisvagyok.hu/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://kiisvagyok.hu/" />
+<meta property="og:title" content="DISC teszt" />
+<meta property="og:description" content="Ingyenes, játékos DISC önismereti teszt magyarul — fedezd fel 10–15 perc alatt, hogy Domináns, Befolyásoló, Stabilitást kereső vagy Alapos / Konform típus vagy-e." />
+<meta property="og:locale" content="hu_HU" />
+<meta name="twitter:card" content="summary" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -655,6 +666,35 @@ main{flex:1; display:flex; flex-direction:column; justify-content:center; paddin
 }
 .btn-icon svg{flex:none;}
 
+.email-cta{
+  margin-top:32px;
+  padding:30px 26px;
+  border-radius:var(--radius-lg);
+  background:var(--surface-2);
+  border:1.5px solid var(--border-strong);
+  text-align:center;
+}
+.email-cta-title{
+  font-size:1.2rem;
+  font-weight:700;
+  margin:0 0 8px;
+}
+.email-cta-text{
+  color:var(--ink-secondary);
+  font-size:.94rem;
+  line-height:1.55;
+  margin:0 0 20px;
+  max-width:440px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.email-cta .email-form-row{margin:0 auto;}
+.email-cta-privacy{
+  font-size:.76rem;
+  color:var(--ink-muted);
+  margin-top:12px;
+}
+.email-cta-privacy a{color:var(--ink-muted); text-decoration:underline;}
 .email-form-wrap{
   width:100%;
   display:flex;
@@ -691,6 +731,35 @@ main{flex:1; display:flex; flex-direction:column; justify-content:center; paddin
 .email-status.success{color:var(--s-dark); font-weight:600;}
 .email-status.error{color:var(--d-dark); font-weight:600;}
 
+.gdpr-banner{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:50;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  box-shadow:0 -8px 24px -12px rgba(38,51,47,.18);
+  padding:18px 20px;
+}
+.gdpr-content{max-width:720px; margin:0 auto;}
+.gdpr-text{font-size:.86rem; color:var(--ink-secondary); line-height:1.5; margin:0;}
+.gdpr-details{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.gdpr-details p{font-size:.82rem; color:var(--ink-secondary); line-height:1.55; margin:0;}
+.gdpr-details a{color:var(--ink);}
+.gdpr-actions{display:flex; gap:10px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap;}
+@media (max-width:480px){
+  .gdpr-actions{justify-content:stretch;}
+  .gdpr-actions .btn{flex:1;}
+}
+
 /* ---------- print / pdf export ---------- */
 @media print{
   body{background:#fff;}
@@ -710,6 +779,8 @@ main{flex:1; display:flex; flex-direction:column; justify-content:center; paddin
   .type-cards{grid-template-columns:1fr 1fr;}
 }
 </style>
+</head>
+<body>
 
 <div class="app" id="app">
 
@@ -801,6 +872,22 @@ main{flex:1; display:flex; flex-direction:column; justify-content:center; paddin
 
 </div>
 
+<div class="gdpr-banner hidden" id="gdprBanner">
+  <div class="gdpr-content">
+    <p class="gdpr-text">Ez az oldal anonim, cookie-mentes látogatottsági statisztikát vezet (GoatCounter), személyes adatot ehhez nem gyűjt. Ha az „Eredmény emailben” funkciót használod, a megadott email címedet egy email-küldő szolgáltatáson keresztül, kizárólag az eredményed egyszeri elküldésére használjuk.</p>
+    <div class="gdpr-details hidden" id="gdprDetails">
+      <p><b>Adatkezelő:</b> a kiisvagyok.hu oldalt magánszemély üzemelteti, nem kereskedelmi céllal.</p>
+      <p><b>Milyen adatot kezelünk:</b> (1) Anonim oldalmegtekintési statisztika a GoatCounter szolgáltatáson keresztül — nem használ sütiket, nem köt adatot személyhez. (2) Az „Eredmény emailben” funkció használatakor a megadott email címedet egy email-küldő szolgáltatás (adatfeldolgozó) továbbítja, kizárólag azért, hogy egyszeri emailt küldjünk a teszteredményeddel. Az email címet nem tároljuk adatbázisban, és nem használjuk hírlevélre vagy marketingre.</p>
+      <p><b>Jogalap:</b> az email-funkciónál a hozzájárulásod (az email cím megadása és a küldés gomb megnyomása); az anonim statisztikánál nem történik személyesadat-kezelés.</p>
+      <p><b>Kapcsolat:</b> kérdés vagy adatkezeléssel kapcsolatos kérés esetén írj a <a href="mailto:privacy@kiisvagyok.hu">privacy@kiisvagyok.hu</a> címre.</p>
+    </div>
+    <div class="gdpr-actions">
+      <button class="btn btn-ghost" id="btnGdprDetails">Részletek</button>
+      <button class="btn btn-primary" id="btnGdprAccept">Rendben</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
 "use strict";
@@ -811,9 +898,9 @@ main{flex:1; display:flex; flex-direction:column; justify-content:center; paddin
    - Service ID:  Email Services -> your connected Gmail service
    - Template ID: Email Templates -> your template
    Until filled in, the "Eredmény emailben" button will show an error. */
-var EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-var EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-var EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+var EMAILJS_PUBLIC_KEY = "QaqOUtSOmCi-m7yHd";
+var EMAILJS_SERVICE_ID = "service_32gidsy";
+var EMAILJS_TEMPLATE_ID = "template_qd5i0jb";
 if(window.emailjs && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY"){
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 }
@@ -1317,34 +1404,22 @@ function finish(){
     html += barRow(TYPE_INFO[c].name, c, pctTotal[c]);
   });
 
-  html += '    <p class="section-title">Hol helyezkedsz el a DISC-körben?</p>';
-  html += '    <p class="lede" style="margin-top:0;">A pont a négy arányod súlyozott közepét mutatja a klasszikus DISC-körben — minél közelebb esik egy negyed széléhez, annál erősebben jellemez az az irány.</p>';
-  html += quadrantGraphic(pctTotal, domColor);
-
-  html += '    <p class="section-title">Domináns &amp; második legerősebb</p>';
-  html += '    <div class="type-cards">';
-  html += typeCard(domColor, true);
-  html += typeCard(secondColor, false);
+  html += '    <div class="email-cta">';
+  html += '      <p class="email-cta-title">📊 Kíváncsi vagy a teljes, részletes elemzésre?</p>';
+  html += '      <p class="email-cta-text">Kérd el emailben a részletes bontást: a DISC-körön belüli pontos pozíciódat, a domináns és második típusod jellemzőit, és a három teszt külön-külön eredményét.</p>';
+  html += '      <div class="email-form-row">';
+  html += '        <input type="email" class="email-input" id="emailInput" placeholder="pl. nev@example.com" autocomplete="email">';
+  html += '        <button class="btn btn-primary" id="btnEmailSend">Küldd el emailben</button>';
+  html += '      </div>';
+  html += '      <span class="email-status" id="emailStatus"></span>';
+  html += '      <p class="email-cta-privacy">A megadott email címet kizárólag az eredményed egyszeri elküldésére használjuk. <a href="#" id="privacyLinkInline">Adatkezelési tájékoztató</a></p>';
   html += '    </div>';
-
-  html += overlapSection(domColor, secondColor);
-
-  html += '    <p class="section-title">A három teszt összehasonlítva</p>';
-  html += compareTable(rankTotal, s1, s2, s3);
 
   html += '    <div class="warning-box">Ez a teszt csak nagy vonalakban ad útmutatást. Valószínűleg nem a teljesen reális kép, hiszen csak azt mutatja, hogyan látod saját magadat.</div>';
 
   html += '    <div class="result-actions">';
   html += '      <button class="btn btn-primary" id="btnRecalc">Eredmény újraszámolása</button>';
-  html += '      <button class="btn btn-ghost btn-icon hidden" id="btnEmailToggle">'+mailIcon()+' Eredmény emailben</button>';
   html += '      <button class="btn btn-ghost" id="btnRestart">Újrakezdés</button>';
-  html += '    </div>';
-  html += '    <div class="email-form-wrap hidden" id="emailFormWrap">';
-  html += '      <div class="email-form-row">';
-  html += '        <input type="email" class="email-input" id="emailInput" placeholder="pl. nev@example.com" autocomplete="email">';
-  html += '        <button class="btn btn-primary" id="btnEmailSend">Küldés</button>';
-  html += '      </div>';
-  html += '      <span class="email-status" id="emailStatus"></span>';
   html += '    </div>';
 
   html += '  </div>';
@@ -1357,15 +1432,17 @@ function finish(){
   document.getElementById("btnRecalc").addEventListener("click", function(){
     finish();
   });
-  var emailFormWrap = document.getElementById("emailFormWrap");
   var emailInput = document.getElementById("emailInput");
   var emailStatus = document.getElementById("emailStatus");
   var btnEmailSend = document.getElementById("btnEmailSend");
 
-  document.getElementById("btnEmailToggle").addEventListener("click", function(){
-    emailFormWrap.classList.toggle("hidden");
-    if(!emailFormWrap.classList.contains("hidden")) emailInput.focus();
-  });
+  var privacyLinkInline = document.getElementById("privacyLinkInline");
+  if(privacyLinkInline){
+    privacyLinkInline.addEventListener("click", function(e){
+      e.preventDefault();
+      openPrivacyPanel();
+    });
+  }
 
   btnEmailSend.addEventListener("click", function(){
     var email = emailInput.value.trim();
@@ -1394,7 +1471,9 @@ function finish(){
       dominant_desc: dom.desc,
       second_name: second.name,
       second_pct: pctTotal[secondColor] + "%",
-      breakdown: breakdown
+      second_desc: second.desc,
+      breakdown: breakdown,
+      test_breakdown: testBreakdownText(s1, s2, s3)
     };
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).then(function(){
       emailStatus.textContent = "Elküldve! Nézd meg a postaládádat (a spam mappát is).";
@@ -1608,6 +1687,16 @@ function overlapSection(domColor, secondColor){
   return html;
 }
 
+function testBreakdownText(s1, s2, s3){
+  function line(scores){
+    var pct = pctOfTotal(scores);
+    return TYPE_ORDER.map(function(c){
+      return TYPE_INFO[c].name + ": " + scores[c] + " pont (" + pct[c] + "%)";
+    }).join("\n");
+  }
+  return "1. Viselkedés\n" + line(s1) + "\n\n2. Környezet\n" + line(s2) + "\n\n3. Megjelenés\n" + line(s3);
+}
+
 function compareTable(rankTotal, s1, s2, s3){
   var pct1 = pctOfTotal(s1), pct2 = pctOfTotal(s2), pct3 = pctOfTotal(s3);
   var cell = function(scores, pct, c){
@@ -1629,6 +1718,38 @@ function compareTable(rankTotal, s1, s2, s3){
   '</div>';
 }
 
+/* ================= GDPR BANNER ================= */
+
+var GDPR_KEY = "disc_gdpr_ack_v1";
+var gdprBanner = document.getElementById("gdprBanner");
+var gdprDetails = document.getElementById("gdprDetails");
+var btnGdprDetails = document.getElementById("btnGdprDetails");
+var btnGdprAccept = document.getElementById("btnGdprAccept");
+
+function openPrivacyPanel(){
+  gdprBanner.classList.remove("hidden");
+  gdprDetails.classList.remove("hidden");
+  btnGdprDetails.textContent = "Elrejt";
+}
+
+btnGdprDetails.addEventListener("click", function(){
+  var willShow = gdprDetails.classList.contains("hidden");
+  gdprDetails.classList.toggle("hidden");
+  btnGdprDetails.textContent = willShow ? "Elrejt" : "Részletek";
+});
+btnGdprAccept.addEventListener("click", function(){
+  try{ localStorage.setItem(GDPR_KEY, "1"); }catch(e){}
+  gdprBanner.classList.add("hidden");
+});
+
+try{
+  if(!localStorage.getItem(GDPR_KEY)){
+    gdprBanner.classList.remove("hidden");
+  }
+}catch(e){
+  gdprBanner.classList.remove("hidden");
+}
+
 /* ================= INIT ================= */
 
 if(state.step >= TOTAL || (state.step > 0 && Object.keys(state.answers).length >= TOTAL)){
@@ -1639,3 +1760,5 @@ if(state.step >= TOTAL || (state.step > 0 && Object.keys(state.answers).length >
 
 })();
 </script>
+</body>
+</html>
